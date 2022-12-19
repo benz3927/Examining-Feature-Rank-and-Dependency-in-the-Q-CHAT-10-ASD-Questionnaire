@@ -1,63 +1,7 @@
 ---
 title: "Examining Feature Rank and Dependency in the Q-CHAT-10 ASD Questionnaire"
-author:
-  - name: Benjamin Zhao
-    email: bzhao@hamilton.edu
-    affiliations:
-      - name: Hamilton College
-  - name: Drake Gorecki
-    email: dgorecki@hamilton.edu
-    affiliations:
-      - name: Hamilton College
-  - name: Tural Sadigov
-    email: tsadigov@hamilton.edu
-    affiliations:
-      - name: Hamilton College
-        orcid: 0000-0002-6446-415X
-        address: 198 College Hill Rd
-        city: Clinton
-        state: NY
-        country: USA
-        postal-code: 13323-1218
-        
-abstract: Recent research has found consistent and significant increases 
-  in the prevalence of Autism Spectrum Disorder (ASD) diagnoses for children 
-  since the early 2000s (Zablotsky 2019). A widely used screening survey is the
-  Q-CHAT-10 checklist questionnaire. We examine 1054 Q-CHAT-10 responses for toddlers
-  collected by Dr. Fadi Thabtah (Thabtah 2018) using random forest,
-  chi-squared tests, and randomized permutation to identify dependency 
-  among the questions. From our chi-square tests and random forest model,
-  we observe a high level of dependency among the similarly ranked most 
-  important variables, a moderate level of dependency among similarly low ranked variables, and no statistically significant relationship
-   between top and bottom groups of variables. To improve the Q-CHAT-10 survey methodology, we suggest selecting the most representative questions out of groupings of similarly-ranked high and low-importance questions while developing research on new survey questions, which may be able to help with early ASD identification.
-
-format: 
-    html:
-      theme: 
-        light: zephyr
-        dark: darkly
-title-block-banner: darkgray
-date: November 16, 2022
-highlight-style: pygments
-chunk_output_type: console
-fig-align: center
-always_allow_html: true
-toc: true
-toc-location: right
-number-sections: true
-page-layout: article
-code-overflow: scroll
-code-line-numbers: false
-code-copy: true
-execute:
-  echo: true
-  warning: false
-  eval: true
-  output: true
-  error: false
-  freeze: true
-  out.width: "100%"
-  cache: true
+format: pdf
+toc: false
 bibliography: references.bib
 csl: electronic-journal-of-statistics.csl
 editor: 
@@ -65,7 +9,25 @@ editor:
     wrap: 72
 ---
 
-# Background and Significance
+### Abstract {.abstract}
+
+Recent research has found consistent and significant increases in the
+prevalence of Autism Spectrum Disorder (ASD) diagnoses for children
+since the early 2000s. A widely used screening survey is the Q-CHAT-10
+checklist questionnaire. We examine 1054 Q-CHAT-10 responses for
+toddlers collected by Dr. Fadi Thabtah using random forest, chi-squared
+tests, and randomized permutation to identify dependency among the
+questions. From our chi-square tests and random forest model, we observe
+a high level of dependency among the similarly ranked most important
+variables, a moderate level of dependency among similarly low ranked
+variables, and no statistically significant relationship between top and
+bottom groups of variables. To improve the Q-CHAT-10 survey methodology,
+we suggest selecting the most representative questions out of groupings
+of similarly-ranked high and low-importance questions while developing
+research on new survey questions, which may be able to help with early
+ASD identification.
+
+### Background and Significance
 
 The number of diagnoses of several different child developmental
 disabilities including ASD (Autism Spectrum Disorder) have increased
@@ -128,7 +90,7 @@ traits.
     your child scores 3 or above, the health professional may consider
     referring your child for a multi-disciplinary assessment" [@qchat].
 
-# Methods
+### Methods
 
 For our analysis we used the open source data of Q-CHAT-10 responses
 collected by Dr. Thabtah [@thabtah2018data], which includes 1054
@@ -138,9 +100,7 @@ associated with and have a tendency to appear in conjunction with other
 questions.
 
 We want to rank the questions in order of importance and contribution.
-Although feature importance may not necessarily have too much technical
-significance within our code, it is very beneficial for visual
-presentation. Feature importance provides us with some insights on which
+Feature importance provides us with some insights on which
 social/behavioral questions within the questionnaire to explore more
 deeply.
 
@@ -233,17 +193,10 @@ training/testing split was used to fit our random forest model. Within
 our training (the "other") data, 20% is saved as the validation set for
 tuning the hyperparameters of our random forest model [@Rf_tutorial].
 
-## Data Overview: (Information from Data Source).
+### Data Overview: (Information from Data Source).
 
 The dataset analyzed includes binary, continuous, and categorical
-variables. There are 1054 total individuals and 18 total variables. The
-data is also very clean: there are no missing data. A small amount of
-variable manipulation was required to settle a discontinuity within the
-variable that descries who completed the survey. "Health Care
-Professional" with a capital "C" and "P" and "Health care professional"
-with lowercase versions of those letters were both separate categories,
-and in order to combine them into one category, we simply un-capitalized
-all letters.
+variables. There are 1054 total individuals and 18 total variables.
 
 **Variable Analysis:**
 
@@ -284,7 +237,7 @@ Variable with 4 levels: "family member", "health care professional",
 two levels: "yes" and "no". Yes corresponds to a questionnaire score of
 4 or more.
 
-# Results
+### Results
 
 We observe the following variable importance graph from our tuned random
 forest model:
@@ -295,12 +248,12 @@ Our first random forest model used to classify whether or not someone
 had ASD-like criteria using all variables except the Q-CHAT-10 yielded a
 confusion matrix.
 
-### Original Random Forest on Training Data - Confusion Matrix Results
+#### Original Random Forest on Training Data - Confusion Matrix Results
 
-|                  | Observed (no) | Observed (yes) | Classification Error |
-|------------------|---------------|----------------|----------------------|
-| Prediction (no)  | 240           | 20             | 0.0769231            |
-| Prediction (yes) | 14            | 568            | 0.0240550            |
+|                  | Observed (no) | Observed (yes) |
+|------------------|---------------|----------------|
+| Prediction (no)  | 240           | 20             |
+| Prediction (yes) | 14            | 568            |
 
 The OOB (Out-Of-Bag) estimate of classification error rate of our random
 original forest model is 4.04% The true positive rate is if we had
@@ -320,12 +273,12 @@ likely due to the way how values points for when Q-CHAT-10 scores are
 summed up to 4 or more, the classification will be 1, or the individual
 should check a professional doctor for diagnosis.
 
-### Tuned Random Forest on Testing Data - Confusion Matrix Results
+#### Tuned Random Forest on Testing Data - Confusion Matrix Results
 
-|                  | Observed (no) | Observed (yes) | Classification Error |
-|------------------|---------------|----------------|----------------------|
-| Prediction (no)  | 61            | 4              | 0.061538             |
-| Prediction (yes) | 5             | 142            | 0.034014             |
+|                  | Observed (no) | Observed (yes) |
+|------------------|---------------|----------------|
+| Prediction (no)  | 61            | 4              |
+| Prediction (yes) | 5             | 142            |
 
 We observe that our random forest "last fit" tuned model has an OOB
 classification error of 4.245% on our testing data. We observe in our
@@ -339,9 +292,9 @@ worse on the unseen testing data.
 
 ![](roc_curve.png){width="415"}
 
-## Testing Dependency Between Features on Training Data
+### Testing Dependency Between Features on Training Data
 
-### Question 9 \~ Question 6: Random Forest Confusion Matrix
+#### Question 9 \~ Question 6: Random Forest Confusion Matrix
 
 |                  | Observed (no) | Observed (yes) | Classification Error |
 |------------------|---------------|----------------|----------------------|
@@ -370,9 +323,9 @@ be linked in that they screen for similar behavioral or social traits.
 We continue this thought process by carrying out several chi-squared
 tests below.
 
-## Chi-Squared Tests:
+### Chi-Squared Tests:
 
-### Test 1: Question 9 \~ Question 6
+#### Test 1: Question 9 \~ Question 6
 
 We want to test the following hypotheses at the alpha = 0.0001
 significance level.
@@ -413,7 +366,7 @@ with a high proportions of "1"s in question 6.
 
 ![](9_6.png){width="469"}
 
-### Test 2: Question 7 \~ Question 5
+#### Test 2: Question 7 \~ Question 5
 
 We want to test the following hypotheses at the alpha = 0.0001
 significance level.
@@ -452,7 +405,7 @@ question 7 are highly correlated. A high proportion of "1"s in question
 
 ![](7_5.png){width="449"}
 
-### Test 3: Top (4000 Randomly Sampled Observations from Top 5 Ranked Questions) \~ Bottom (4000 Randomly Sampled Observations from Bottom 5 Ranked Questions)
+#### Test 3: Top (4000 Randomly Sampled Observations from Top 5 Ranked Questions) \~ Bottom (4000 Randomly Sampled Observations from Bottom 5 Ranked Questions)
 
 We want to test the following hypotheses at the alpha = 0.0001
 significance level.
@@ -499,7 +452,7 @@ positive and negative results in the bottom-ranked questions.
 
 ![](top_bottom.png){width="447"}
 
-## Dependency Between Top Questions 9, 7, 6, and 5.
+#### Dependency Between Top Questions 9, 7, 6, and 5.
 
 There are multiple highly saturated blue and red within the contingency
 table of the top 4 questions ranked from our feature importance. Several
@@ -507,7 +460,7 @@ of the top questions are highly correlated.
 
 ![](top.png){width="443"}
 
-## Dependency Within Bottom Questions 8, 4, 3, and 2
+#### Dependency Within Bottom Questions 8, 4, 3, and 2
 
 There are some highly saturated blue and red cells within the
 contingency table of the bottom 4 questions ranked from our feature
@@ -519,7 +472,7 @@ between top questions.
 
 ![](bottom.png){width="473"}
 
-# Discussion/Conclusions
+### Discussion/Conclusions
 
 **Below are the importance ranking of the top questions from our tuned
 random forest model:**
@@ -650,14 +603,14 @@ dignified future for people with autism" and we "must never forget to
 listen to their point of view, whenever possible, in order to meet their
 particular needs" [@Posar2019].
 
-# References:
+### References:
 
 ::: {#refs}
 :::
 
-# Appendix
+### Appendix
 
-## Load the Data
+#### Load the Data
 
 ```{r}
 # Libraries
@@ -700,7 +653,7 @@ glimpse(screening)
 
 ```
 
-## Splitting the Data for Training, Validation, and Testing
+#### Splitting the Data for Training, Validation, and Testing
 
 ```{r}
 # Data Splitting
@@ -729,7 +682,7 @@ val_set
 
 ```
 
-## Graphs & Figures
+### Graphs & Figures
 
 **Qchat Score vs Sex:**
 
@@ -768,7 +721,7 @@ ASD). For this graph, the distribution of no family members with ASD is
 roughly symmetric, while the distribution of family member with ASD is
 more skewed right.
 
-## Q-CHAT-10 Scores Overall Distribution
+#### Q-CHAT-10 Scores Overall Distribution
 
 ```{r}
 raw_screening %>% 
@@ -783,7 +736,7 @@ to be around 5. The distribution of Q-CHAT-10 scores looks roughly
 symmetric without significant outliers. The range/spread of the
 distribution is 10 - 0, max of 10 and a min of 0.
 
-## Libraries
+#### Libraries
 
 ```{r}
 library(randomForest)
@@ -794,7 +747,7 @@ library(tidymodels)
 library(vcd)
 ```
 
-## Random Forests - Tuning, Training, Validation, and Testing
+#### Random Forests - Tuning, Training, Validation, and Testing
 
 ```{r}
 # Random Forests
@@ -870,7 +823,7 @@ autoplot(rf_auc) +
 
 ```
 
-## RF "Last Fit," Testing Data Results, and Variable Importance Graph
+#### RF "Last Fit," Testing Data Results, and Variable Importance Graph
 
 ```{r}
 set.seed(2022)
@@ -915,7 +868,7 @@ save(last_rf_fit, file = 'QCHAT-RandomForest_Last_fit.Rdata')
 
 ```
 
-## Comparing 4000 Random Samples from Aggregated Group of the Top 5 Feature Paired with 4000 Random Samples from an Aggregated Group of the Bottom 5 Features
+#### Comparing 4000 Random Samples from Aggregated Group of the Top 5 Feature Paired with 4000 Random Samples from an Aggregated Group of the Bottom 5 Features
 
 ```{r}
 set.seed(2022)
@@ -1049,7 +1002,7 @@ mosaic(A9 ~ A6, data = screening_other, shade = TRUE,gp = shading_max)
 
 ```
 
-## Testing Dependency between Question 6 and Question 9
+#### Testing Dependency between Question 6 and Question 9
 
 ```{r}
 set.seed(2022)
@@ -1067,7 +1020,7 @@ rf_6_9
 
 ```
 
-## Testing Dependency Between Question 5 and 7
+#### Testing Dependency Between Question 5 and 7
 
 ```{r}
 set.seed(2022)
@@ -1145,7 +1098,7 @@ p_value_6_5
 mosaic(A6 ~ A5, data = screening_other, shade = TRUE,gp = shading_max)
 ```
 
-## Our Original Random Forest Model on the Training Data
+#### Our Original Random Forest Model on the Training Data
 
 ```{r}
 set.seed(2022)
